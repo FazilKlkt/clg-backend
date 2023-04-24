@@ -1,0 +1,191 @@
+USER API
+POST /api/user - Create a new user :
+    Request Body 
+        {
+            "email":"fk3337487@gmail.com",
+            "username":"rajkumar223",
+            "password":"ohmygawd"
+        }
+    Expected Response
+        {
+            "status": true,
+            "id": "64328c9ccfee5b9e4c0e1b1f",
+            "message": "User created"
+        }
+    If user already exists
+        {
+            "status": false,
+            "message": "User already exists"
+        }
+
+GET /api/user - Get all users
+    Expected Response
+    {
+    "status": true,
+    "user": [
+        {
+            "_id": "643280a569ed5cc930f3acca",
+            "email": "fk2227487@gmail.com",
+            "username": "chaman",
+            "files": [
+                "643284f31348c94770814cd2",
+                "643289ba4a101f491c9ff005"
+            ]
+        },
+        {
+            "_id": "64328c9ccfee5b9e4c0e1b1f",
+            "email": "fk3337487@gmail.com",
+            "username": "rajkumar223",
+            "files": []
+        }
+    ]
+    }
+
+PUT /api/user/updatePassSendOtp - Send OTP to update user's password
+    Request Body
+    {
+        "email":"fk3337487@gmail.com",
+        "newPassword":"bobs"
+    }
+
+    Expected Response
+    {
+        "status": true,
+        "message": "Otp sent"
+    }
+
+    If no such user is found
+    {
+        "status": false,
+        "message": "User not found"
+    }
+
+
+PUT /api/user/updatePassCheckOtp - Verify OTP and update user's password
+    Request Body
+    {
+        "email":"fk2227487@gmail.com",
+        "otp":"9999"
+    }
+
+    Expected Response
+    {
+        "status": true,
+        "message": "Password changed sucessfully"
+    }
+
+    If OTP is wrong
+    {
+        "status": false,
+        "message": "Wrong Otp"
+    }
+
+GET /api/user/checkPass - Check if the user's password is correct
+    Request Body
+    {
+        "email":"fk2227487@gmail.com",
+        "password":"hoi"
+    }
+    Expected Response
+    {
+        "status": true,
+        "id": "643280a569ed5cc930f3acca",
+        "message": "Verification sucessful"
+    }
+    If password is wrong
+    {
+        "status": false,
+        "message": "Verification failed "
+    }
+
+GET /api/user/:id - Get a specific user by ID
+    Parameters
+        http://localhost:5000/api/user/643280a569ed5cc930f3acca
+        here,"643280a569ed5cc930f3acca" is userId whose data we are fetching
+    Expected Response
+    {
+        "status": true,
+        "user": {
+            "_id": "643280a569ed5cc930f3acca",
+            "email": "fk2227487@gmail.com",
+            "username": "chaman",
+            "files": [
+                {
+                    "_id": "643289ba4a101f491c9ff005",
+                    "fileName": "idCard.pdf",
+                    "filePath": "https://wanlink.s3.ap-south-1.amazonaws.com/643280a569ed5cc930f3acca/idCard-1681033658153.pdf"
+                },
+                {
+                    "_id": "643284f31348c94770814cd2",
+                    "fileName": "Dark.pdf",
+                    "filePath": "https://wanlink.s3.ap-south-1.amazonaws.com/643280a569ed5cc930f3acca/Dark-1681032432933.pdf"
+                }
+            ]
+        }
+    }
+
+-------------------------------------------------------------------
+EMAIL API
+
+POST /api/email/sendOtp - Send OTP via email
+    Request Body
+    {
+        "email":"fk2227487@gmail.com"
+    }
+    Expected Response
+    {
+        "status": true,
+        "message": "Otp sent sucessfully"
+    }
+    If OTP was already sent previously
+    {
+        "status": true,
+        "message": "Otp updated sucessfully"
+    }
+
+GET /api/email/verifyOtp - Verify OTP sent via email
+    Request Body
+    {
+        "email":"fk2227487@gmail.com"
+    }
+    Expected Response
+    {
+        "status": true,
+        "message": "Otp verified sucessfully"
+    }
+    If OTP is wrong
+    {
+        "status": false,
+        "message": "Wrong otp"
+    }
+    If OTP was not sent to a mail
+    {
+        "status": false,
+        "message": "This email was not sent an OTP"
+    }
+
+-------------------------------------------------------------------
+FILE API
+
+POST /api/files/upload - Upload a file
+    Request Body
+    {
+        "userId":"643280a569ed5cc930f3acca"
+    }
+    Expected Response
+    {
+        "files": [
+            {
+            "_id": "643284f31348c94770814cd2",
+            "fileName": "Dark.pdf",
+            "filePath": "https://wanlink.s3.ap-south-1.amazonaws.com/643280a569ed5cc930f3acca/Dark-1681032432933.pdf",
+            "protectionType": "none",
+            "password": ""
+            }
+        ],
+        "length": 1
+    }
+
+DELETE /api/files/ - Delete all user files
+
+GET /api/files/ - Get list of all user files
